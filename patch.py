@@ -3,6 +3,7 @@
 from sys import argv
 from struct import pack, unpack
 from os.path import getsize
+from csv import reader
 
 ORIGIN = argv[1]
 PATCH = argv[2]
@@ -11,9 +12,18 @@ NEW = ORIGIN.split('.')[0] + '_patch.gmd'
 # 패치 파일 열기
 fp = open(PATCH, 'rb')
 
-# 패치 파일 가공하기
-patch = fp.read()
-patch = patch.replace(b'\x0a\x0a', b'\x00')
+# patch 변수 초기화
+patch = ''
+
+# csv 객체 만들기
+c = reader(fp)
+
+# csv 파일에서 번역만 읽어서 patch 변수에 저장하기
+for i in c:
+  patch += i[1] + b'\x00'
+
+# patch에서 마지막 1바이트 빼기
+patch = patch[:-1]
 
 # 패치 크기 구하기
 psize = len(patch)
