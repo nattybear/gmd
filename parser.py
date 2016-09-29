@@ -62,13 +62,13 @@ for i in text:
   print
 
 # 추출할 파일 이름 만들기
-TEXT_FILE = FILENAME.split('.')[0] + '.txt'
+TEXT_FILE = FILENAME.split('.')[0] + '.csv'
 
 # 텍스트를 파일로 추출하기
 fp2 = open(TEXT_FILE, 'wb')
 for i in text:
-  fp2.write(i)
-  fp2.write('\r\n\r\n')
+  fp2.write('"' + i + '"')
+  fp2.write('\r\n')
 
 # 파일 닫기
 fp.close()
