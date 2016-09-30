@@ -8,6 +8,7 @@ from csv import reader
 ORIGIN = argv[1]
 PATCH = argv[2]
 NEW = ORIGIN.split('.')[0] + '_patch.gmd'
+TABLE = 'Korean.tbl'
 
 # 패치 파일 열기
 fp = open(PATCH, 'rb')
@@ -24,6 +25,16 @@ for i in c:
 
 # patch에서 마지막 1바이트 빼기
 patch = patch[:-1]
+
+# 테이블 파일 읽기
+table = open(TABLE, 'rb')
+
+# 테이블 파일 csv로 열기
+table_csv = reader(table, delimiter='=')
+
+# 패치 내용 테이블에 참조하여 치환하기
+for i in table_csv:
+  patch = patch.replace(i[1], i[0])
 
 # 패치 크기 구하기
 psize = len(patch)
